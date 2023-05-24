@@ -14,23 +14,22 @@ RSpec.describe Recipe, type: :model do
   end
 
   describe "instance methods" do
-    before(:each) do
-      @recipe1 = Recipe.create!(name: "Spaghetti", complexity: 2, genre: "Italian")
-      @ingredient1 = Ingredient.create!(name: "Ground Beef", cost: 2)
-      @ingredient2 = Ingredient.create!(name: "Salt", cost: 4)
-      @ingredient3 = Ingredient.create!(name: "Pasta", cost: 5)
-      @ingredient4 = Ingredient.create!(name: "Tomato", cost: 1)
+    let!(:spaghetti) { Recipe.create!(name: "Spaghetti", complexity: 2, genre: "Italian") }
+    let!(:mac_cheese) {Recipe.create!(name: "Mac and Cheese", complexity: 1, genre: "American")}
 
-      @recipe2 = Recipe.create!(name: "Mac & Cheese", complexity: 4, genre: "American")
+    let!(:beef) { Ingredient.create!(name: "Ground Beef", cost: 2) }
+    let!(:salt) { Ingredient.create!(name: "Salt", cost: 1) }
+    let!(:pasta) { Ingredient.create!(name: "Penne Pasta", cost: 4) }
+    let!(:tomato) { Ingredient.create!(name: "Tomato", cost: 2) }
 
-      RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient1.id)
-      RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient3.id)
-      RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient4.id)
-    end
+    let!(:recipe_ing1) { RecipeIngredient.create!(recipe_id: spaghetti.id, ingredient_id: beef.id) }
+    let!(:recipe_ing2) { RecipeIngredient.create!(recipe_id: spaghetti.id, ingredient_id: pasta.id) }
+    let!(:recipe_ing3) { RecipeIngredient.create!(recipe_id: spaghetti.id, ingredient_id: tomato.id) }
+
 
     it "#total_cost" do
-      expect(@recipe1.total_cost).to eq(8)
-      expect(@recipe2.total_cost).to eq(0)
+      expect(spaghetti.total_cost).to eq(8)
+      expect(mac_cheese.total_cost).to eq(0)
     end
   end
 end
