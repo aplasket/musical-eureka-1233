@@ -21,6 +21,8 @@ RSpec.describe Recipe, type: :model do
       @ingredient3 = Ingredient.create!(name: "Pasta", cost: 5)
       @ingredient4 = Ingredient.create!(name: "Tomato", cost: 1)
 
+      @recipe2 = Recipe.create!(name: "Mac & Cheese", complexity: 4, genre: "American")
+
       RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient1.id)
       RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient3.id)
       RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient4.id)
@@ -28,6 +30,7 @@ RSpec.describe Recipe, type: :model do
 
     it "#total_cost" do
       expect(@recipe1.total_cost).to eq(8)
+      expect(@recipe2.total_cost).to eq(0)
     end
   end
 end

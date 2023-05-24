@@ -1,6 +1,7 @@
 <h1>All Ingredients</h1>
 <% @ingredients.each do |ingredient| %>
   <ul>
-    <li><%= ingredient.name %>: <%= ingredient.cost %></li>
+    <li>Name: <%= ingredient.name %></li>
+    <li>Cost: <%= ingredient.cost %></li>
   </ul>
 <% end %>

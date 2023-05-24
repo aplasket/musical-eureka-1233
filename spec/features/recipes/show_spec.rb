@@ -2,39 +2,37 @@ require "rails_helper"
 
 RSpec.describe "/recipes/:id, recipe show page", type: :feature do
   describe "as a visitor to show page" do
-    before(:each) do
-      @recipe1 = Recipe.create!(name: "Spaghetti", complexity: 2, genre: "Italian")
-      @recipe2 = Recipe.create!(name: "Mac and Cheese", complexity: 1, genre: "American")
+    
+      let!(:spaghetti) { Recipe.create!(name: "Spaghetti", complexity: 2, genre: "Italian") }
+      let!(:mac_cheese) {Recipe.create!(name: "Mac and Cheese", complexity: 1, genre: "American")}
 
-      @ingredient1 = Ingredient.create!(name: "Ground Beef", cost: 2)
-      @ingredient2 = Ingredient.create!(name: "Salt", cost: 4)
-      @ingredient3 = Ingredient.create!(name: "Pasta", cost: 5)
-      @ingredient4 = Ingredient.create!(name: "Tomato", cost: 1)
+      let!(:beef) { Ingredient.create!(name: "Ground Beef", cost: 2) }
+      let!(:salt) { Ingredient.create!(name: "Salt", cost: 1) }
+      let!(:pasta) { Ingredient.create!(name: "Penne Pasta", cost: 4) }
+      let!(:tomato) { Ingredient.create!(name: "Tomato", cost: 2) }
 
-      RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient1.id)
-      RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient3.id)
-      RecipeIngredient.create!(recipe_id: @recipe1.id, ingredient_id: @ingredient4.id)
-    end
+      let!(:recipe_ing1) { RecipeIngredient.create!(recipe_id: spaghetti.id, ingredient_id: beef.id) }
+      let!(:recipe_ing2) { RecipeIngredient.create!(recipe_id: spaghetti.id, ingredient_id: pasta.id) }
+      let!(:recipe_ing3) { RecipeIngredient.create!(recipe_id: spaghetti.id, ingredient_id: tomato.id) }
 
     it "should see the specific recipe and it's attributes and ingredients needed" do
-      visit "/recipes/#{@recipe1.id}"
-
+      visit "/recipes/#{spaghetti.id}"
       
-      expect(page).to have_content("Name: #{@recipe1.name}")
-      expect(page).to have_content("Complexity: #{@recipe1.complexity}")
-      expect(page).to have_content("Genre: #{@recipe1.genre}")
+      expect(page).to have_content(spaghetti.name)
+      expect(page).to have_content("Complexity: #{spaghetti.complexity}")
+      expect(page).to have_content("Genre: #{spaghetti.genre}")
 
       expect(page).to have_content("Ingredients:")
-      expect(page).to have_content(@ingredient1.name)
-      expect(page).to have_content(@ingredient3.name)
-      expect(page).to have_content(@ingredient4.name)
+      expect(page).to have_content(beef.name)
+      expect(page).to have_content(pasta.name)
+      expect(page).to have_content(tomato.name)
 
-      expect(page).to_not have_content(@recipe2.name)
-      expect(page).to_not have_content(@ingredient2.name)
+      expect(page).to_not have_content(mac_cheese.name)
+      expect(page).to_not have_content(salt.name)
     end
 
     it "shows the total cost of all ingredients for the recipe" do
-      visit "/recipes/#{@recipe1.id}"
+      visit "/recipes/#{spaghetti.id}"
         # save_and_open_page
       expect(page).to have_content("Total Cost: 8")
     end
